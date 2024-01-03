@@ -1,0 +1,30 @@
+name: build-deploy
+
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "dev", "main" ]
+
+jobs:
+  build-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build . -f ./deploy/Dockerfile -t Laniakea-group/prometei-rest-api:${{ github.sha }}
+
+      - name: Deploy to EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker stop prometei-rest-api || true
+            docker rm prometei-rest-api || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/prometei-rest-api:${{ github.sha }}
+            docker run -d --name=prometei-rest-api -p 80:80 ${{ secrets.DOCKER_USERNAME }}/prometei-rest-api:${{ github.sha }}
