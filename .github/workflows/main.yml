@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker stop prometei-rest-api || true
-            docker rm prometei-rest-api || true
-            docker pull laniakea-group/prometei-rest-api:${{ github.sha }}
-            docker run -d --name=prometei-rest-api -p 80:80 laniakea-group/prometei-rest-api:${{ github.sha }}
+            sudo docker stop prometei-rest-api || true
+            sudo docker rm prometei-rest-api || true
+            sudo docker pull laniakea-group/prometei-rest-api:${{ github.sha }}
+            sudo docker run -d --name=prometei-rest-api -p 80:80 laniakea-group/prometei-rest-api:${{ github.sha }}
