@@ -17,7 +17,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker login --username=Fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
-          docker build . -f ./deploy/Dockerfile -t ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
+          docker build . -f ./Dockerfile -t ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
           docker push ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
 
       - name: Deploy to EC2 instance
