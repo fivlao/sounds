@@ -17,8 +17,8 @@ jobs:
       - name: Build Docker image
         run: |
           docker login --username=fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
-          docker build . -f ./Dockerfile -t ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
-          docker push ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
+          docker build . -f ./Dockerfile -t ghcr.io/fivlao/sound:latest-dev
+          docker push ghcr.io/fivlao/sound:latest-dev
 
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
@@ -30,6 +30,5 @@ jobs:
             sudo docker stop prometei-rest-api || true
             sudo docker rm prometei-rest-api || true
             sudo docker login --username=fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
-            echo ss -> ${GITHUB_REF##*/} ____ ${{GITHUB_REF##*/}}
-            sudo docker pull ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
-            sudo docker run -d --name=prometei-rest-api -p 80:80 ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
+            sudo docker pull ghcr.io/fivlao/sound:latest-dev
+            sudo docker run -d --name=prometei-rest-api -p 80:80 ghcr.io/fivlao/sound:latest-dev
