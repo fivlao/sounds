@@ -30,5 +30,6 @@ jobs:
             sudo docker stop prometei-rest-api || true
             sudo docker rm prometei-rest-api || true
             sudo docker login --username=fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
+            echo ss -> ${GITHUB_REF##*/} ____ ${{GITHUB_REF##*/}}
             sudo docker pull ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
             sudo docker run -d --name=prometei-rest-api -p 80:80 ghcr.io/fivlao/sound:latest-${GITHUB_REF##*/}
