@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker login --user=Fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
+          docker login --username=Fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
           docker build . -f ./deploy/Dockerfile -t ghcr.io/Fivlao/sound:latest-${GITHUB_REF##*/}
           docker push ghcr.io/Fivlao/sound:latest-${GITHUB_REF##*/}
 
@@ -29,6 +29,6 @@ jobs:
           script: |
             sudo docker stop prometei-rest-api || true
             sudo docker rm prometei-rest-api || true
-            sudo docker login --user=Fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
+            sudo docker login --username=Fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
             sudo docker pull ghcr.io/Fivlao/sound:latest-${GITHUB_REF##*/}
             sudo docker run -d --name=prometei-rest-api -p 80:80 ghcr.io/Fivlao/sound:latest-${GITHUB_REF##*/}
