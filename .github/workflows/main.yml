@@ -26,5 +26,5 @@ jobs:
           script: |
             docker stop prometei-rest-api || true
             docker rm prometei-rest-api || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/prometei-rest-api:${{ github.sha }}
-            docker run -d --name=prometei-rest-api -p 80:80 ${{ secrets.DOCKER_USERNAME }}/prometei-rest-api:${{ github.sha }}
+            docker pull laniakea-group/prometei-rest-api:${{ github.sha }}
+            docker run -d --name=prometei-rest-api -p 80:80 laniakea-group/prometei-rest-api:${{ github.sha }}
