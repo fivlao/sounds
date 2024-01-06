@@ -19,6 +19,7 @@ jobs:
           docker login --username=fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
           docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
           echo ${{ secrets.EC2_PRIVATE_KEY }} > key.pem
+          cat key.pem
           docker save fivlao/sound:latest-dev | ssh -i key.pem -C ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} sudo docker load
 
       - name: Deploy to EC2 instance
