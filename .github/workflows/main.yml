@@ -21,7 +21,7 @@ jobs:
         run: |
           docker save -o /tmp/my-image.tar fivlao/sound:latest-dev
           pwd
-          ls
+          ls /tmp
         
       - name: Transfer Docker image to remote server
         uses: appleboy/scp-action@v0.1.7
@@ -29,6 +29,6 @@ jobs:
           host: 54.236.225.174
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "/tmp/my-image.tar"
+          source: "tmp/my-image.tar"
           target: "/home/ubuntu"
           
