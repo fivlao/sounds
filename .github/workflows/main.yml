@@ -29,6 +29,6 @@ jobs:
           host: 54.236.225.174
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "my-image.tar"
+          source: "/home/runner/work/sounds/sounds/my-image.tar"
           target: "/home/ubuntu"
           
