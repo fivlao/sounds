@@ -16,7 +16,6 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker login --username=fivlao --password=${{ secrets.DOCKER_ACCESS_TOKEN }} ghcr.io
           docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
           echo ${{ secrets.EC2_PRIVATE_KEY }} > key.pem
           
