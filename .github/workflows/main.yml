@@ -16,9 +16,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          printf "%s\n" "$EC2_PRIVATE_KEY" > key.pem
-          cat key.pem
-        shell: bash
-        env:
-          EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-                
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          docker build . -f ./deploy/Dockerfile -t fivlao/sound:latest-dev
+          docker save fivlao/sound:latest-dev | ssh -i "~/.ssh/id_rsa" -C ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} sudo docker load
