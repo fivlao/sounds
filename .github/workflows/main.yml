@@ -18,7 +18,10 @@ jobs:
         run: docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
 
       - name: Save Docker image as tar file
-        run: docker save -o my-image.tar fivlao/sound:latest-dev
+        run: |
+          docker save -o my-image.tar fivlao/sound:latest-dev
+          pwd
+          ls
         
       - name: Transfer Docker image to remote server
         uses: appleboy/scp-action@v0.1.7
