@@ -19,7 +19,7 @@ jobs:
 
       - name: Save Docker image as tar file
         run: |
-          docker save -o ~/my-image.tar fivlao/sound:latest-dev
+          docker save -o /tmp/my-image.tar fivlao/sound:latest-dev
           pwd
           ls
         
@@ -29,6 +29,6 @@ jobs:
           host: 54.236.225.174
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "~/my-image.tar"
+          source: "/tmp/my-image.tar"
           target: "/home/ubuntu"
           
