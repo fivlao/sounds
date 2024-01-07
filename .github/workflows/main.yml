@@ -20,6 +20,7 @@ jobs:
       - name: Save Docker image as tar file
         run: |
           docker save -o fivlao-sound.tar fivlao/sound:latest-dev
+          touch file.txt
           pwd
           ls
         
@@ -29,7 +30,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }} 
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "fivlao-sound.tar"
+          source: "file.txt"
           target: "/home/ubuntu"
 
       - name: Run new image version 
