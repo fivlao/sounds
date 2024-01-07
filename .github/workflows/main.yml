@@ -15,19 +15,31 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: touch file.txt
+        run: docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
 
       - name: Save Docker image as tar file
         run: |
+          docker save -o fivlao-sound.tar fivlao/sound:latest-dev
           pwd
           ls
         
       - name: Transfer Docker image to remote server
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: 54.236.225.174
-          username: ubuntu
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }} 
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "file.txt"
+          source: "fivlao-sound.tar"
           target: "/home/ubuntu"
-          debug: true
+
+      - name: Run new image version 
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          username: ${{ secrets.EC2_USERNAME }}
+          host: ${{ secrets.EC2_HOST }}
+          script: |
+            sudo docker load -i "/home/ubuntu/fivlao-sound.tar"
+            sudo docker stop prometei-rest-api || true
+            sudo docker rm prometei-rest-api || true
+            sudo docker run -d --name=prometei-rest-api -p 80:80 fivlao/sound:latest-dev
