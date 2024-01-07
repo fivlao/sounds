@@ -16,8 +16,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.PRIVATE_KEY }}" > id_rsa.pem
+          chmod 600 id_rsa.pem
           docker build . -f ./deploy/Dockerfile -t fivlao/sound:latest-dev
-          docker save fivlao/sound:latest-dev | ssh -i "~/.ssh/id_rsa" -C ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} sudo docker load
+          docker save fivlao/sound:latest-dev | ssh -i "id_rsa.pem" -C ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} sudo docker load
