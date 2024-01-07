@@ -17,7 +17,6 @@ jobs:
       - name: Build Docker image
         run: |
           printf "%s\n" "${{ secrets.PRIVATE_KEY }}" > id_rsa.pem
-          chmod 600 id_rsa.pem
           cat id_rsa.pem
           docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
           docker save fivlao/sound:latest-dev | ssh -o StrictHostKeyChecking=no -i "id_rsa.pem" -C ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} sudo docker load
