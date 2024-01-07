@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > id_rsa.pem
+          printf "%s\n" "${{ secrets.PRIVATE_KEY }}" > id_rsa.pem
           chmod 400 id_rsa.pem
           cat id_rsa.pem
           docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
