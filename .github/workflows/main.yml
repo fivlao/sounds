@@ -42,6 +42,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           script: |
             sudo docker load -i "/home/ubuntu/fivlao-sound.tar"
+            rm /home/ubuntu/fivlao-sound.tar
             sudo docker stop prometei-rest-api || true
             sudo docker rm prometei-rest-api || true
             sudo docker run -d --name=prometei-rest-api -p 80:80 fivlao/sound:latest-dev
