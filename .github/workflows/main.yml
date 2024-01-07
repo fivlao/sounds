@@ -25,10 +25,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no my-image.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ubuntu
+          scp -o StrictHostKeyChecking=no my-image.tar ubuntu@54.236.225.174:/home/ubuntu
 
       - name: Load Docker image on remote server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no ubuntu@54.236.225.174 << 'ENDSSH'
           docker load -i /home/ubuntu/my-image.tar
           ENDSSH
