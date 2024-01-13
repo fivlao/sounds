@@ -27,9 +27,9 @@ jobs:
 
       - name: Init AWS CLI 
         run: |
-          mkdir ./aws
-          touch ./aws/config < ${{ secrets.AWS_CONFIG }}
-          touch ./aws/credentials < ${{ secrets.AWS_CREDS }}
+          mkdir ~/aws
+          echo "${{ secrets.AWS_CONFIG }}" > ~/aws/config
+          echo "${{ secrets.AWS_CREDS }}" > ~/aws/credentials
           
       - name: Start AWS EC2 instance
         run: |
