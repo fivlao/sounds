@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build . -f ./Dockerfile -t fivlao/sound:latest-dev
-
+          
       - name: Save Docker image as tar file
         run: |
           docker save -o fivlao-sound.tar fivlao/sound:latest-dev
@@ -24,7 +24,21 @@ jobs:
           touch file.txt
           pwd
           ls
-        
+
+      - name: Install AWS CLI 
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          mkdir ./aws
+          touch ./aws/config < ${{ secrets.AWS_CONFIG }}
+          touch ./aws/credentials < ${{ secrets.AWS_CREDS }}
+          
+      - name: Start AWS EC2 instance
+        run: |
+          aws ec2 start-instances --instance-ids ${{ secrets.INSTANCE_ID }}
+          sleep 60
+
       - name: Transfer Docker image to remote server
         uses: appleboy/scp-action@v0.1.5
         with:
@@ -42,7 +56,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           script: |
             sudo docker load -i "/home/ubuntu/fivlao-sound.tar"
-            rm /home/ubuntu/fivlao-sound.tar
             sudo docker stop prometei-rest-api || true
             sudo docker rm prometei-rest-api || true
-            sudo docker run -d --name=prometei-rest-api -p 80:80 fivlao/sound:latest-dev
+
+      - name: Stop AWS EC2 instance
+        run: aws ec2 stop-instances --instance-ids ${{ secrets.INSTANCE_ID }}
