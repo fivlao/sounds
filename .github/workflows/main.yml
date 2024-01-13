@@ -45,7 +45,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "fivlao-sound.tar"
           target: "/home/ubuntu"
-          timeout: 300
+          timeout: "300s"
 
       - name: Run new image version 
         uses: appleboy/ssh-action@master
