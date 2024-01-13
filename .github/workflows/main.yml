@@ -25,11 +25,12 @@ jobs:
           pwd
           ls
 
-      - name: Init AWS CLI 
-        run: |
-          mkdir ~/aws
-          echo "${{ secrets.AWS_CONFIG }}" > ~/aws/config
-          echo "${{ secrets.AWS_CREDS }}" > ~/aws/credentials
+      - name: Configure AWS Credentials for China region audience
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
           
       - name: Start AWS EC2 instance
         run: |
