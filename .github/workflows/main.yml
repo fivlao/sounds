@@ -33,9 +33,7 @@ jobs:
           aws-region: us-east-1
           
       - name: Start AWS EC2 instance
-        run: |
-          aws ec2 start-instances --instance-ids ${{ secrets.INSTANCE_ID }}
-          sleep 60
+        run: aws ec2 start-instances --instance-ids ${{ secrets.INSTANCE_ID }}
 
       - name: Transfer Docker image to remote server
         uses: appleboy/scp-action@v0.1.5
